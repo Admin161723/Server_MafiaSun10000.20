@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مافیا سان | سرورها</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Inter', sans-serif;
+            overflow: hidden;
+            background: #0a0c10;
+        }
+
+        /* صفحه سرورها */
+        #servers-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://s8.uupload.ir/files/img_20260224_195355_379_ihvv.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        /* دکمه بازگشت - سمت چپ بالا */
+        .back-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            background: rgba(20, 25, 35, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 3px solid #ffaa00;
+            color: white;
+            font-size: 28px;
+            z-index: 2000;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .back-btn:hover {
+            transform: scale(1.1) rotate(180deg);
+            background: rgba(255, 170, 0, 0.3);
+            border-color: white;
+            box-shadow: 0 0 20px #ffaa00;
+        }
+
+        .back-btn i {
+            font-size: 28px;
+        }
+
+        /* سرور نوجوانان - سمت چپ بالا */
+        .teen-server {
+            position: absolute;
+            top: 120px;
+            left: 80px;
+            width: 350px;
+            height: 350px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.7));
+        }
+
+        .teen-server:hover {
+            transform: translateY(-15px) scale(1.08);
+            filter: drop-shadow(0 30px 40px rgba(255, 170, 0, 0.5));
+        }
+
+        .teen-server.disabled {
+            opacity: 0.5;
+            filter: grayscale(0.8) drop-shadow(0 20px 30px rgba(0, 0, 0, 0.7));
+            cursor: not-allowed;
+        }
+
+        .teen-server.disabled:hover {
+            transform: translateY(-8px) scale(1.04);
+            filter: grayscale(0.8) drop-shadow(0 30px 40px rgba(0, 0, 0, 0.5));
+        }
+
+        .teen-server img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* سرور بزرگسالان - سمت راست بالا */
+        .adult-server {
+            position: absolute;
+            top: 120px;
+            right: 80px;
+            width: 350px;
+            height: 350px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.7));
+        }
+
+        .adult-server:hover {
+            transform: translateY(-15px) scale(1.08);
+            filter: drop-shadow(0 30px 40px rgba(255, 170, 0, 0.5));
+        }
+
+        .adult-server.disabled {
+            opacity: 0.5;
+            filter: grayscale(0.8) drop-shadow(0 20px 30px rgba(0, 0, 0, 0.7));
+            cursor: not-allowed;
+        }
+
+        .adult-server.disabled:hover {
+            transform: translateY(-8px) scale(1.04);
+            filter: grayscale(0.8) drop-shadow(0 30px 40px rgba(0, 0, 0, 0.5));
+        }
+
+        .adult-server img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* دکمه ساخت سرور - پایین گوشه */
+        .create-server {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .create-button {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #ffaa00, #ff8800);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 4px solid white;
+            color: white;
+            font-size: 45px;
+            font-weight: 300;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 0 5px rgba(255, 170, 0, 0.3);
+            position: relative;
+        }
+
+        .create-button:hover {
+            transform: scale(1.15) rotate(180deg);
+            background: linear-gradient(145deg, #f39c12, #e67e22);
+            border-color: #ffaa00;
+            box-shadow: 0 20px 40px rgba(255, 170, 0, 0.6), 0 0 0 8px rgba(255, 255, 255, 0.2);
+        }
+
+        .create-button::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        .create-text {
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            padding: 8px 20px;
+            border-radius: 30px;
+            border: 2px solid #ffaa00;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+            100% { transform: scale(1); opacity: 0.6; }
+        }
+
+        /* پیام هشدار */
+        .access-message {
+            position: fixed;
+            bottom: 140px;
+            right: 40px;
+            background: #ff5555;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            z-index: 3000;
+            display: none;
+            animation: slideUp 1.5s ease;
+            border: 2px solid #ffaa00;
+        }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            15% { opacity: 1; transform: translateY(0); }
+            85% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-30px); }
+        }
+
+        /* ریسپانسیو */
+        @media (max-width: 900px) {
+            .teen-server, .adult-server {
+                width: 280px;
+                height: 280px;
+            }
+            .teen-server { left: 40px; top: 100px; }
+            .adult-server { right: 40px; top: 100px; }
+            .back-btn { width: 50px; height: 50px; font-size: 24px; left: 20px; top: 20px; }
+            .create-button { width: 70px; height: 70px; font-size: 40px; }
+            .create-text { font-size: 14px; padding: 6px 16px; }
+        }
+
+        @media (max-width: 700px) {
+            .teen-server, .adult-server {
+                width: 220px;
+                height: 220px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .teen-server, .adult-server {
+                width: 160px;
+                height: 160px;
+            }
+            .teen-server { left: 20px; top: 80px; }
+            .adult-server { right: 20px; top: 80px; }
+            .create-button { width: 60px; height: 60px; font-size: 35px; bottom: 20px; right: 20px; }
+            .create-text { font-size: 12px; padding: 4px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="servers-page">
+        <!-- دکمه بازگشت - سمت چپ بالا -->
+        <div class="back-btn" onclick="goToMainPage()">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+
+        <!-- سرور نوجوانان - چپ بالا -->
+        <div class="teen-server" id="teenServer" onclick="openTeenServer()">
+            <img src="https://s8.uupload.ir/files/inshot_20260223_174810147_punt.png" alt="سرور نوجوانان">
+        </div>
+
+        <!-- سرور بزرگسالان - راست بالا -->
+        <div class="adult-server" id="adultServer" onclick="openAdultServer()">
+            <img src="https://s8.uupload.ir/files/inshot_20260223_174726756_v2jq.png" alt="سرور بزرگسالان">
+        </div>
+
+        <!-- دکمه ساخت سرور -->
+        <div class="create-server">
+            <div class="create-button" onclick="showNotification()">
+                +
+            </div>
+            <div class="create-text">ساخت سرور</div>
+        </div>
+
+        <div id="accessMessage" class="access-message"></div>
+    </div>
+
+    <script>
+        // ========== تنظیمات لینک‌ها ==========
+        const TEEN_SERVER_URL = 'https://admin161723.github.io/Server_nojvan/';
+        const ADULT_SERVER_URL = 'https://admin161723.github.io/Mafia_10000.189.0/';
+        const MAIN_PAGE_URL = 'https://admin161723.github.io/Mafia_Sun_10000.88.189/';
+
+        // ========== اطلاعات کاربر ==========
+        let userData = {
+            userId: 0,
+            userName: 'بازیکن',
+            userRole: 'normal',
+            userAge: 0,
+            hasBlueTick: false,
+            hasOrangeTick: false,
+            hasBrownTick: false
+        };
+
+        // ========== بارگذاری اطلاعات کاربر از localStorage ==========
+        function loadUserData() {
+            try {
+                const savedData = localStorage.getItem('mafiaSun_userData');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    userData.userId = data.userId || 0;
+                    userData.userName = data.userName || 'بازیکن';
+                    userData.userRole = data.userRole || 'normal';
+                    userData.userAge = data.userAge || 0;
+                    userData.hasBlueTick = data.hasBlueTick || false;
+                    userData.hasOrangeTick = data.hasOrangeTick || false;
+                    userData.hasBrownTick = data.hasBrownTick || false;
+                    
+                    console.log('📱 اطلاعات کاربر:', userData);
+                    console.log('📅 رده سنی:', userData.userAge < 18 ? 'زیر ۱۸ سال' : 'بالای ۱۸ سال');
+                    console.log('👑 نقش:', userData.userRole);
+                } else {
+                    console.log('⚠️ اطلاعات کاربر یافت نشد');
+                    redirectToLogin();
+                }
+            } catch (e) {
+                console.error('❌ خطا در بارگذاری اطلاعات:', e);
+                redirectToLogin();
+            }
+        }
+
+        // ========== هدایت به صفحه ورود ==========
+        function redirectToLogin() {
+            window.location.href = 'https://admin161723.github.io/Mafia_Sun_10.1000/';
+        }
+
+        // ========== بررسی دسترسی ویژه (ادمین‌ها) ==========
+        function hasSpecialAccess() {
+            // سازنده، پشتیبانی، ادمین
+            return userData.userRole === 'creator' || 
+                   userData.userRole === 'support' || 
+                   userData.userRole === 'admin' ||
+                   userData.hasBlueTick || 
+                   userData.hasBrownTick;
+        }
+
+        // ========== نمایش پیام دسترسی ==========
+        function showAccessMessage(message, isError = true) {
+            const msgBox = document.getElementById('accessMessage');
+            msgBox.textContent = message;
+            msgBox.style.background = isError ? '#ff5555' : '#2a8a5e';
+            msgBox.style.display = 'block';
+            setTimeout(() => msgBox.style.display = 'none', 3000);
+        }
+
+        // ========== تنظیم وضعیت سرورها بر اساس سن کاربر ==========
+        function setupServersAccess() {
+            const teenServer = document.getElementById('teenServer');
+            const adultServer = document.getElementById('adultServer');
+            
+            // اگه کاربر دسترسی ویژه داره، همه سرورها براش فعاله
+            if (hasSpecialAccess()) {
+                console.log('👑 کاربر ویژه - دسترسی به همه سرورها');
+                teenServer.classList.remove('disabled');
+                adultServer.classList.remove('disabled');
+                return;
+            }
+            
+            // بررسی سن کاربر
+            if (userData.userAge < 18) {
+                // زیر ۱۸ سال - فقط سرور نوجوانان فعال
+                console.log('🧒 کاربر زیر ۱۸ سال - فقط سرور نوجوانان');
+                teenServer.classList.remove('disabled');
+                adultServer.classList.add('disabled');
+            } else {
+                // بالای ۱۸ سال - فقط سرور بزرگسالان فعال
+                console.log('👨 کاربر بالای ۱۸ سال - فقط سرور بزرگسالان');
+                teenServer.classList.add('disabled');
+                adultServer.classList.remove('disabled');
+            }
+        }
+
+        // ========== باز کردن سرور نوجوانان ==========
+        function openTeenServer() {
+            if (hasSpecialAccess()) {
+                console.log('👑 دسترسی ویژه به سرور نوجوانان');
+                window.location.href = TEEN_SERVER_URL;
+                return;
+            }
+            
+            if (userData.userAge < 18) {
+                console.log('✅ دسترسی مجاز به سرور نوجوانان');
+                window.location.href = TEEN_SERVER_URL;
+            } else {
+                console.log('❌ دسترسی غیرمجاز به سرور نوجوانان');
+                showAccessMessage('⛔ شما به سرور نوجوانان دسترسی ندارید. این سرور مخصوص افراد زیر ۱۸ سال است.');
+            }
+        }
+
+        // ========== باز کردن سرور بزرگسالان ==========
+        function openAdultServer() {
+            if (hasSpecialAccess()) {
+                console.log('👑 دسترسی ویژه به سرور بزرگسالان');
+                window.location.href = ADULT_SERVER_URL;
+                return;
+            }
+            
+            if (userData.userAge >= 18) {
+                console.log('✅ دسترسی مجاز به سرور بزرگسالان');
+                window.location.href = ADULT_SERVER_URL;
+            } else {
+                console.log('❌ دسترسی غیرمجاز به سرور بزرگسالان');
+                showAccessMessage('⛔ شما به سرور بزرگسالان دسترسی ندارید. این سرور مخصوص افراد بالای ۱۸ سال است.');
+            }
+        }
+
+        // ========== بازگشت به صفحه اصلی ==========
+        function goToMainPage() {
+            window.location.href = MAIN_PAGE_URL;
+        }
+
+        // ========== نمایش نوتیفیکیشن ساخت سرور ==========
+        function showNotification() {
+            showAccessMessage('✨ به زودی', false);
+        }
+
+        // ========== راه‌اندازی ==========
+        window.addEventListener('DOMContentLoaded', function() {
+            loadUserData();
+            setupServersAccess();
+        });
+    </script>
+</body>
+</html>
