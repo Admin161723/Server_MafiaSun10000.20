@@ -19,7 +19,6 @@
             background: #0a0c10;
         }
 
-        /* صفحه سرورها */
         #servers-page {
             position: fixed;
             top: 0;
@@ -30,7 +29,6 @@
             background-size: cover;
         }
 
-        /* دکمه بازگشت - سمت چپ بالا */
         .back-btn {
             position: fixed;
             top: 30px;
@@ -39,7 +37,6 @@
             height: 60px;
             background: rgba(20, 25, 35, 0.7);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -57,14 +54,8 @@
             transform: scale(1.1) rotate(180deg);
             background: rgba(255, 170, 0, 0.3);
             border-color: white;
-            box-shadow: 0 0 20px #ffaa00;
         }
 
-        .back-btn i {
-            font-size: 28px;
-        }
-
-        /* سرور نوجوانان - سمت چپ بالا */
         .teen-server {
             position: absolute;
             top: 120px;
@@ -98,7 +89,6 @@
             object-fit: contain;
         }
 
-        /* سرور بزرگسالان - سمت راست بالا */
         .adult-server {
             position: absolute;
             top: 120px;
@@ -132,7 +122,6 @@
             object-fit: contain;
         }
 
-        /* دکمه ساخت سرور - پایین گوشه */
         .create-server {
             position: fixed;
             bottom: 30px;
@@ -200,7 +189,6 @@
             100% { transform: scale(1); opacity: 0.6; }
         }
 
-        /* پیام هشدار */
         .access-message {
             position: fixed;
             bottom: 140px;
@@ -223,7 +211,6 @@
             100% { opacity: 0; transform: translateY(-30px); }
         }
 
-        /* ریسپانسیو */
         @media (max-width: 900px) {
             .teen-server, .adult-server {
                 width: 280px;
@@ -257,22 +244,18 @@
 </head>
 <body>
     <div id="servers-page">
-        <!-- دکمه بازگشت - سمت چپ بالا -->
         <div class="back-btn" onclick="goToMainPage()">
             <i class="fas fa-arrow-left"></i>
         </div>
 
-        <!-- سرور نوجوانان - چپ بالا -->
         <div class="teen-server" id="teenServer" onclick="openTeenServer()">
             <img src="https://s8.uupload.ir/files/inshot_20260223_174810147_punt.png" alt="سرور نوجوانان">
         </div>
 
-        <!-- سرور بزرگسالان - راست بالا -->
         <div class="adult-server" id="adultServer" onclick="openAdultServer()">
             <img src="https://s8.uupload.ir/files/inshot_20260223_174726756_v2jq.png" alt="سرور بزرگسالان">
         </div>
 
-        <!-- دکمه ساخت سرور -->
         <div class="create-server">
             <div class="create-button" onclick="showNotification()">
                 +
@@ -283,150 +266,184 @@
         <div id="accessMessage" class="access-message"></div>
     </div>
 
-    <script>
-        // ========== تنظیمات لینک‌ها ==========
-        const TEEN_SERVER_URL = 'https://admin161723.github.io/Server_nojvan/';
-        const ADULT_SERVER_URL = 'https://admin161723.github.io/Mafia_10000.189.0/';
-        const MAIN_PAGE_URL = 'https://admin161723.github.io/Mafia_Sun_10000.88.189/';
+    <script src="servers.js"></script>
+<script>
+// ========== تنظیمات لینک‌ها ==========
+const TEEN_SERVER_URL = 'https://admin161723.github.io/Server_nojvan/';
+const ADULT_SERVER_URL = 'https://admin161723.github.io/Mafia_10000.189.0/';
+const MAIN_PAGE_URL = 'https://admin161723.github.io/Mafia_Sun_10000.88.189/';
 
-        // ========== اطلاعات کاربر ==========
-        let userData = {
-            userId: 0,
-            userName: 'بازیکن',
-            userRole: 'normal',
-            userAge: 0,
-            hasBlueTick: false,
-            hasOrangeTick: false,
-            hasBrownTick: false
-        };
+// ========== اطلاعات کاربر ==========
+let userData = {
+    userId: 0,
+    userName: 'بازیکن',
+    userRole: 'normal',
+    userAge: 0,
+    hasBlueTick: false,
+    hasOrangeTick: false,
+    hasBrownTick: false
+};
 
-        // ========== بارگذاری اطلاعات کاربر از localStorage ==========
-        function loadUserData() {
-            try {
-                const savedData = localStorage.getItem('mafiaSun_userData');
-                if (savedData) {
-                    const data = JSON.parse(savedData);
-                    userData.userId = data.userId || 0;
-                    userData.userName = data.userName || 'بازیکن';
-                    userData.userRole = data.userRole || 'normal';
-                    userData.userAge = data.userAge || 0;
-                    userData.hasBlueTick = data.hasBlueTick || false;
-                    userData.hasOrangeTick = data.hasOrangeTick || false;
-                    userData.hasBrownTick = data.hasBrownTick || false;
-                    
-                    console.log('📱 اطلاعات کاربر:', userData);
-                    console.log('📅 رده سنی:', userData.userAge < 18 ? 'زیر ۱۸ سال' : 'بالای ۱۸ سال');
-                    console.log('👑 نقش:', userData.userRole);
-                } else {
-                    console.log('⚠️ اطلاعات کاربر یافت نشد');
-                    redirectToLogin();
-                }
-            } catch (e) {
-                console.error('❌ خطا در بارگذاری اطلاعات:', e);
-                redirectToLogin();
-            }
-        }
-
-        // ========== هدایت به صفحه ورود ==========
-        function redirectToLogin() {
-            window.location.href = 'https://admin161723.github.io/Mafia_Sun_10.1000/';
-        }
-
-        // ========== بررسی دسترسی ویژه (ادمین‌ها) ==========
-        function hasSpecialAccess() {
-            // سازنده، پشتیبانی، ادمین
-            return userData.userRole === 'creator' || 
-                   userData.userRole === 'support' || 
-                   userData.userRole === 'admin' ||
-                   userData.hasBlueTick || 
-                   userData.hasBrownTick;
-        }
-
-        // ========== نمایش پیام دسترسی ==========
-        function showAccessMessage(message, isError = true) {
-            const msgBox = document.getElementById('accessMessage');
-            msgBox.textContent = message;
-            msgBox.style.background = isError ? '#ff5555' : '#2a8a5e';
-            msgBox.style.display = 'block';
-            setTimeout(() => msgBox.style.display = 'none', 3000);
-        }
-
-        // ========== تنظیم وضعیت سرورها بر اساس سن کاربر ==========
-        function setupServersAccess() {
-            const teenServer = document.getElementById('teenServer');
-            const adultServer = document.getElementById('adultServer');
+// ========== بارگذاری اطلاعات کاربر از localStorage ==========
+function loadUserData() {
+    try {
+        const savedData = localStorage.getItem('mafiaSun_userData');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            userData.userId = data.userId || 0;
+            userData.userName = data.userName || 'بازیکن';
+            userData.userRole = data.userRole || 'normal';
+            userData.userAge = data.userAge || 0;
+            userData.hasBlueTick = data.hasBlueTick || false;
+            userData.hasOrangeTick = data.hasOrangeTick || false;
+            userData.hasBrownTick = data.hasBrownTick || false;
             
-            // اگه کاربر دسترسی ویژه داره، همه سرورها براش فعاله
-            if (hasSpecialAccess()) {
-                console.log('👑 کاربر ویژه - دسترسی به همه سرورها');
-                teenServer.classList.remove('disabled');
-                adultServer.classList.remove('disabled');
-                return;
-            }
-            
-            // بررسی سن کاربر
-            if (userData.userAge < 18) {
-                // زیر ۱۸ سال - فقط سرور نوجوانان فعال
-                console.log('🧒 کاربر زیر ۱۸ سال - فقط سرور نوجوانان');
-                teenServer.classList.remove('disabled');
-                adultServer.classList.add('disabled');
-            } else {
-                // بالای ۱۸ سال - فقط سرور بزرگسالان فعال
-                console.log('👨 کاربر بالای ۱۸ سال - فقط سرور بزرگسالان');
-                teenServer.classList.add('disabled');
-                adultServer.classList.remove('disabled');
-            }
+            console.log('📱 اطلاعات کاربر:', userData);
+            console.log('📅 رده سنی:', userData.userAge < 18 ? 'زیر ۱۸ سال' : 'بالای ۱۸ سال');
+            console.log('👑 نقش:', userData.userRole);
+            return true;
+        } else {
+            console.log('⚠️ اطلاعات کاربر یافت نشد');
+            return false;
         }
+    } catch (e) {
+        console.error('❌ خطا در بارگذاری اطلاعات:', e);
+        return false;
+    }
+}
 
-        // ========== باز کردن سرور نوجوانان ==========
-        function openTeenServer() {
-            if (hasSpecialAccess()) {
-                console.log('👑 دسترسی ویژه به سرور نوجوانان');
-                window.location.href = TEEN_SERVER_URL;
-                return;
-            }
-            
-            if (userData.userAge < 18) {
-                console.log('✅ دسترسی مجاز به سرور نوجوانان');
-                window.location.href = TEEN_SERVER_URL;
-            } else {
-                console.log('❌ دسترسی غیرمجاز به سرور نوجوانان');
-                showAccessMessage('⛔ شما به سرور نوجوانان دسترسی ندارید. این سرور مخصوص افراد زیر ۱۸ سال است.');
-            }
-        }
+// ========== هدایت به صفحه ورود ==========
+function redirectToLogin() {
+    window.location.href = 'https://admin161723.github.io/Mafia_Sun_10.1000/';
+}
 
-        // ========== باز کردن سرور بزرگسالان ==========
-        function openAdultServer() {
-            if (hasSpecialAccess()) {
-                console.log('👑 دسترسی ویژه به سرور بزرگسالان');
-                window.location.href = ADULT_SERVER_URL;
-                return;
-            }
-            
-            if (userData.userAge >= 18) {
-                console.log('✅ دسترسی مجاز به سرور بزرگسالان');
-                window.location.href = ADULT_SERVER_URL;
-            } else {
-                console.log('❌ دسترسی غیرمجاز به سرور بزرگسالان');
-                showAccessMessage('⛔ شما به سرور بزرگسالان دسترسی ندارید. این سرور مخصوص افراد بالای ۱۸ سال است.');
-            }
-        }
+// ========== بررسی دسترسی ویژه (ادمین‌ها) ==========
+function hasSpecialAccess() {
+    // سازنده، پشتیبانی، ادمین، ناظر
+    return userData.userRole === 'creator' || 
+           userData.userRole === 'support' || 
+           userData.userRole === 'admin' ||
+           userData.userRole === 'observer' ||
+           userData.hasBlueTick || 
+           userData.hasBrownTick ||
+           userData.hasOrangeTick;
+}
 
-        // ========== بازگشت به صفحه اصلی ==========
-        function goToMainPage() {
-            window.location.href = MAIN_PAGE_URL;
-        }
+// ========== نمایش پیام دسترسی ==========
+function showAccessMessage(message, isError = true) {
+    const msgBox = document.getElementById('accessMessage');
+    if (!msgBox) return;
+    msgBox.textContent = message;
+    msgBox.style.background = isError ? '#ff5555' : '#2a8a5e';
+    msgBox.style.display = 'block';
+    setTimeout(() => {
+        msgBox.style.display = 'none';
+    }, 3000);
+}
 
-        // ========== نمایش نوتیفیکیشن ساخت سرور ==========
-        function showNotification() {
-            showAccessMessage('✨ به زودی', false);
-        }
+// ========== تنظیم وضعیت سرورها بر اساس سن کاربر ==========
+function setupServersAccess() {
+    const teenServer = document.getElementById('teenServer');
+    const adultServer = document.getElementById('adultServer');
+    
+    if (!teenServer || !adultServer) return;
+    
+    // ابتدا هر دو سرور را فعال می‌کنیم (کلاس disabled را حذف)
+    teenServer.classList.remove('disabled');
+    adultServer.classList.remove('disabled');
+    
+    // اگر کاربر لاگین نکرده، هر دو سرور غیرفعال می‌شوند
+    if (!localStorage.getItem('mafiaSun_currentUser')) {
+        teenServer.classList.add('disabled');
+        adultServer.classList.add('disabled');
+        return;
+    }
+    
+    // اگه کاربر دسترسی ویژه داره، همه سرورها براش فعاله
+    if (hasSpecialAccess()) {
+        console.log('👑 کاربر ویژه - دسترسی به همه سرورها');
+        return;
+    }
+    
+    // بررسی سن کاربر
+    if (userData.userAge < 18) {
+        // زیر ۱۸ سال - فقط سرور نوجوانان فعال
+        console.log('🧒 کاربر زیر ۱۸ سال - فقط سرور نوجوانان');
+        adultServer.classList.add('disabled');
+    } else {
+        // بالای ۱۸ سال - فقط سرور بزرگسالان فعال
+        console.log('👨 کاربر بالای ۱۸ سال - فقط سرور بزرگسالان');
+        teenServer.classList.add('disabled');
+    }
+}
 
-        // ========== راه‌اندازی ==========
-        window.addEventListener('DOMContentLoaded', function() {
-            loadUserData();
-            setupServersAccess();
-        });
-    </script>
+// ========== باز کردن سرور نوجوانان ==========
+function openTeenServer() {
+    // بررسی لاگین بودن
+    if (!localStorage.getItem('mafiaSun_currentUser')) {
+        showAccessMessage('⚠️ لطفا ابتدا وارد حساب خود شوید');
+        setTimeout(() => redirectToLogin(), 1500);
+        return;
+    }
+    
+    if (hasSpecialAccess()) {
+        console.log('👑 دسترسی ویژه به سرور نوجوانان');
+        window.location.href = TEEN_SERVER_URL;
+        return;
+    }
+    
+    if (userData.userAge < 18) {
+        console.log('✅ دسترسی مجاز به سرور نوجوانان');
+        window.location.href = TEEN_SERVER_URL;
+    } else {
+        console.log('❌ دسترسی غیرمجاز به سرور نوجوانان');
+        showAccessMessage('⛔ شما به سرور نوجوانان دسترسی ندارید. این سرور مخصوص افراد زیر ۱۸ سال است.');
+    }
+}
+
+// ========== باز کردن سرور بزرگسالان ==========
+function openAdultServer() {
+    // بررسی لاگین بودن
+    if (!localStorage.getItem('mafiaSun_currentUser')) {
+        showAccessMessage('⚠️ لطفا ابتدا وارد حساب خود شوید');
+        setTimeout(() => redirectToLogin(), 1500);
+        return;
+    }
+    
+    if (hasSpecialAccess()) {
+        console.log('👑 دسترسی ویژه به سرور بزرگسالان');
+        window.location.href = ADULT_SERVER_URL;
+        return;
+    }
+    
+    if (userData.userAge >= 18) {
+        console.log('✅ دسترسی مجاز به سرور بزرگسالان');
+        window.location.href = ADULT_SERVER_URL;
+    } else {
+        console.log('❌ دسترسی غیرمجاز به سرور بزرگسالان');
+        showAccessMessage('⛔ شما به سرور بزرگسالان دسترسی ندارید. این سرور مخصوص افراد بالای ۱۸ سال است.');
+    }
+}
+
+// ========== بازگشت به صفحه اصلی ==========
+function goToMainPage() {
+    window.location.href = MAIN_PAGE_URL;
+}
+
+// ========== نمایش نوتیفیکیشن ساخت سرور ==========
+function showNotification() {
+    showAccessMessage('✨ به زودی', false);
+}
+
+// ========== راه‌اندازی ==========
+window.addEventListener('DOMContentLoaded', function() {
+    const loaded = loadUserData();
+    if (!loaded && localStorage.getItem('mafiaSun_currentUser')) {
+        // اگر کاربر لاگین کرده ولی داده‌اش لود نشد، به صفحه ثبت‌نام برو
+        redirectToLogin();
+    }
+    setupServersAccess();
+});
+</script>
 </body>
 </html>
